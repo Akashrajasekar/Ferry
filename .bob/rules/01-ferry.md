@@ -1,0 +1,5 @@
+- This repo is Ferry: a backporting tool. The plan is in PLAN.md; read only the sections a task names.
+- Mechanical work belongs in Python scripts under ferry/; do not simulate it in chat.
+- Never edit the main branch of workspace/demo-ledger.
+- A port is successful only if `python -m ferry verify` passes for it.
+- Keep answers short: what changed, what was run, the result.

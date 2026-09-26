@@ -1,0 +1,5 @@
+workspace/
+.ferry/
+__pycache__/
+.venv/
+*.pyc
