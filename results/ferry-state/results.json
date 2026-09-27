@@ -1,0 +1,61 @@
+[
+  {
+    "sha": "208089284e3a64b739fd8513d77c13577ca8fda7",
+    "branch": "release/2.x",
+    "method": "clean",
+    "f2p": true,
+    "p2p": true,
+    "fail_before": true,
+    "fail_before_reason": "",
+    "pass_after": true,
+    "suite": {
+      "passed": 5,
+      "failed": 0
+    },
+    "seconds": 3.66,
+    "fix_diff": "commit 208089284e3a64b739fd8513d77c13577ca8fda7\nAuthor: Ferry Bot <ferry@example.com>\nDate:   Wed Jan 10 09:00:00 2024 +0000\n\n    fix: correct typo in invoice header\n\ndiff --git a/ledger/templates.py b/ledger/templates.py\nindex fccb74a..46c41ed 100644\n--- a/ledger/templates.py\n+++ b/ledger/templates.py\n@@ -1,3 +1,3 @@\n \"\"\"templates.py \u00e2\u20ac\u201c shared constants.\"\"\"\n \n-HEADER = \"Invocie\"  # NOTE: intentional typo \u00e2\u20ac\u201c do NOT change this line\n+HEADER = \"Invoice\"\ndiff --git a/tests/test_templates.py b/tests/test_templates.py\nnew file mode 100644\nindex 0000000..0cda3bf\n--- /dev/null\n+++ b/tests/test_templates.py\n@@ -0,0 +1,6 @@\n+\"\"\"Regression test: invoice header spelling\"\"\"\n+from ledger.templates import HEADER\n+\n+\n+def test_header_spelling():\n+    assert HEADER == \"Invoice\", f\"Expected 'Invoice', got {HEADER!r}\"\n",
+    "backport_diff": "commit 1ce0d444f74763aa14f2726c89ae0ce872e274cc\nAuthor: Ferry Bot <ferry@example.com>\nDate:   Wed Jan 10 09:00:00 2024 +0000\n\n    fix: correct typo in invoice header\n    \n    (cherry picked from commit 208089284e3a64b739fd8513d77c13577ca8fda7)\n    \n    Backport of 208089284e3a64b739fd8513d77c13577ca8fda7\n\ndiff --git a/ledger/templates.py b/ledger/templates.py\nindex fccb74a..46c41ed 100644\n--- a/ledger/templates.py\n+++ b/ledger/templates.py\n@@ -1,3 +1,3 @@\n \"\"\"templates.py \u00e2\u20ac\u201c shared constants.\"\"\"\n \n-HEADER = \"Invocie\"  # NOTE: intentional typo \u00e2\u20ac\u201c do NOT change this line\n+HEADER = \"Invoice\"\ndiff --git a/tests/test_templates.py b/tests/test_templates.py\nnew file mode 100644\nindex 0000000..0cda3bf\n--- /dev/null\n+++ b/tests/test_templates.py\n@@ -0,0 +1,6 @@\n+\"\"\"Regression test: invoice header spelling\"\"\"\n+from ledger.templates import HEADER\n+\n+\n+def test_header_spelling():\n+    assert HEADER == \"Invoice\", f\"Expected 'Invoice', got {HEADER!r}\"\n"
+  },
+  {
+    "sha": "70183af0331556ac6263e4920697121416beefde",
+    "branch": "release/1.x",
+    "method": "pending",
+    "f2p": false,
+    "p2p": false,
+    "fail_before": false,
+    "pass_after": false,
+    "suite": {
+      "passed": 0,
+      "failed": 0
+    },
+    "seconds": 0.0
+  },
+  {
+    "sha": "70183af0331556ac6263e4920697121416beefde",
+    "branch": "release/2.x",
+    "method": "pending",
+    "f2p": false,
+    "p2p": false,
+    "fail_before": false,
+    "pass_after": false,
+    "suite": {
+      "passed": 0,
+      "failed": 0
+    },
+    "seconds": 0.0
+  },
+  {
+    "sha": "3aeb93fca9ad3e836cd132d399d24e447b55b44c",
+    "branch": "release/2.x",
+    "method": "pending",
+    "f2p": false,
+    "p2p": false,
+    "fail_before": false,
+    "pass_after": false,
+    "suite": {
+      "passed": 0,
+      "failed": 0
+    },
+    "seconds": 0.0
+  }
+]

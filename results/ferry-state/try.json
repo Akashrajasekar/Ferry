@@ -1,0 +1,53 @@
+[
+  {
+    "sha": "70183af0331556ac6263e4920697121416beefde",
+    "branch": "release/1.x",
+    "status": "conflict",
+    "worktree": "workspace/worktrees/70183af__release-1.x",
+    "backport_branch": "backport/70183af/release-1.x",
+    "conflicts": [
+      {
+        "type": "modify/delete",
+        "file": "HEAD and modified in 70183af (fix(security): prevent path traversal in invoice export (FSA-2026-001)).  Version 70183af (fix(security): prevent path traversal in invoice export (FSA-2026-001)) of ledger/exporters/pdf.py left in tree."
+      }
+    ],
+    "seconds": 0.98
+  },
+  {
+    "sha": "70183af0331556ac6263e4920697121416beefde",
+    "branch": "release/2.x",
+    "status": "conflict",
+    "worktree": "workspace/worktrees/70183af__release-2.x",
+    "backport_branch": "backport/70183af/release-2.x",
+    "conflicts": [
+      {
+        "type": "modify/delete",
+        "file": "HEAD and modified in 70183af (fix(security): prevent path traversal in invoice export (FSA-2026-001)).  Version 70183af (fix(security): prevent path traversal in invoice export (FSA-2026-001)) of ledger/exporters/pdf.py left in tree."
+      }
+    ],
+    "seconds": 0.67
+  },
+  {
+    "sha": "3aeb93fca9ad3e836cd132d399d24e447b55b44c",
+    "branch": "release/2.x",
+    "status": "conflict",
+    "worktree": "workspace/worktrees/3aeb93f__release-2.x",
+    "backport_branch": "backport/3aeb93f/release-2.x",
+    "conflicts": [
+      {
+        "type": "content",
+        "file": "ledger/money.py"
+      }
+    ],
+    "seconds": 0.73
+  },
+  {
+    "sha": "208089284e3a64b739fd8513d77c13577ca8fda7",
+    "branch": "release/2.x",
+    "status": "clean_pass",
+    "worktree": "workspace/worktrees/2080892__release-2.x",
+    "backport_branch": "backport/2080892/release-2.x",
+    "conflicts": [],
+    "seconds": 1.84
+  }
+]

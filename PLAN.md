@@ -14,7 +14,7 @@
 - [x] T01 Bob foundation (AGENTS.md, custom mode, skill, rules)
 - [x] T02 Scenario generator + policy documents
 - [x] T03 CLI part 1: `audit`, `try`
-- [ ] T04 CLI part 2: `verify`, `report`
+- [x] T04 CLI part 2: `verify`, `report`
 - [ ] T05 Scope fixes from documents (Plan mode)
 - [ ] T06 Adaptive ports with parallel subagents (Ferry mode)
 - [ ] T07 Dashboard polish + GitHub Pages

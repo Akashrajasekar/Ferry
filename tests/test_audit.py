@@ -22,7 +22,14 @@ def audit_entries():
 
 
 def test_empty_items_backported_on_2x(audit_entries):
-    """'handle empty line items' must be backported:<sha> on release/2.x."""
+    """'handle empty line items' must be backported:<sha> on release/2.x.
+
+    The SHA reported must be the backport commit on release/2.x, not the
+    original commit on main.
+    """
+    import subprocess
+    from pathlib import Path
+
     entry = next(
         (e for e in audit_entries if "handle empty line items" in e["subject"]),
         None,
@@ -31,6 +38,15 @@ def test_empty_items_backported_on_2x(audit_entries):
     status = entry["branches"].get("release/2.x", "")
     assert status.startswith("backported:"), (
         f"Expected backported:<sha> on release/2.x, got {status!r}"
+    )
+
+    # Verify that the reported short SHA is the backport commit on release/2.x,
+    # not the original main commit.
+    reported_short = status[len("backported:"):]
+    main_sha = entry["sha"]
+    assert not main_sha.startswith(reported_short), (
+        f"backported SHA {reported_short!r} must be the release-branch commit, "
+        f"not the main SHA {main_sha[:7]!r}"
     )
 
 

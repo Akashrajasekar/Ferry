@@ -39,6 +39,16 @@ def cmd_try(args: argparse.Namespace) -> int:
     return _try(args)
 
 
+def cmd_verify(args: argparse.Namespace) -> int:
+    from .verify import cmd_verify as _verify
+    return _verify(args)
+
+
+def cmd_report(args: argparse.Namespace) -> int:
+    from .report import cmd_report as _report
+    return _report(args)
+
+
 def cmd_reset(args: argparse.Namespace) -> int:
     from .mechanical import cmd_reset as _reset
     return _reset(args)
@@ -77,6 +87,32 @@ def main() -> None:
         help="Use hard-coded plan fixture from section 4.3 instead of plan.json",
     )
     try_p.set_defaults(func=cmd_try)
+
+    # verify command
+    verify_p = sub.add_parser(
+        "verify",
+        help="Verify ports: fail_before / pass_after / p2p",
+    )
+    verify_p.add_argument(
+        "--fix",
+        metavar="SHA",
+        default=None,
+        help="Only verify ports for this fix SHA (prefix match)",
+    )
+    verify_p.add_argument(
+        "--branch",
+        metavar="BRANCH",
+        default=None,
+        help="Only verify ports for this release branch",
+    )
+    verify_p.set_defaults(func=cmd_verify)
+
+    # report command
+    report_p = sub.add_parser(
+        "report",
+        help="Generate docs/index.html and results/ changelogs",
+    )
+    report_p.set_defaults(func=cmd_report)
 
     # reset command
     reset_p = sub.add_parser(

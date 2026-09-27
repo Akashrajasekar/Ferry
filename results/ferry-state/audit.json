@@ -1,0 +1,62 @@
+[
+  {
+    "sha": "bccd2c23fbd004db896cf9541307ea047ee6f39d",
+    "subject": "fix: cap discounts at 100%",
+    "kind": "fix",
+    "branches": {
+      "release/0.9": "missing",
+      "release/1.x": "missing",
+      "release/2.x": "missing"
+    }
+  },
+  {
+    "sha": "208089284e3a64b739fd8513d77c13577ca8fda7",
+    "subject": "fix: correct typo in invoice header",
+    "kind": "fix",
+    "branches": {
+      "release/0.9": "missing",
+      "release/1.x": "missing",
+      "release/2.x": "missing"
+    }
+  },
+  {
+    "sha": "3aeb93fca9ad3e836cd132d399d24e447b55b44c",
+    "subject": "fix: use banker's rounding for currency",
+    "kind": "fix",
+    "branches": {
+      "release/0.9": "missing",
+      "release/1.x": "missing",
+      "release/2.x": "missing"
+    }
+  },
+  {
+    "sha": "70183af0331556ac6263e4920697121416beefde",
+    "subject": "fix(security): prevent path traversal in invoice export (FSA-2026-001)",
+    "kind": "security",
+    "branches": {
+      "release/0.9": "missing",
+      "release/1.x": "missing",
+      "release/2.x": "missing"
+    }
+  },
+  {
+    "sha": "9d5c16955e1ec581bbfdabc60530b0fbf8adab63",
+    "subject": "fix(security): escape customer name in export header",
+    "kind": "security",
+    "branches": {
+      "release/0.9": "missing",
+      "release/1.x": "missing",
+      "release/2.x": "missing"
+    }
+  },
+  {
+    "sha": "40145b264700bfe99924a2c99154f77058010362",
+    "subject": "fix: handle empty line items",
+    "kind": "fix",
+    "branches": {
+      "release/0.9": "missing",
+      "release/1.x": "missing",
+      "release/2.x": "backported:228bad0"
+    }
+  }
+]

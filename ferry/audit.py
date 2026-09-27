@@ -45,31 +45,42 @@ def _release_branches(demo: Path) -> list[str]:
     return sorted(branches)
 
 
-def _backport_shas_on_branch(demo: Path, branch: str, merge_base: str) -> list[str]:
-    """Return SHAs that are in trailer lines on branch after the merge-base."""
+def _backport_shas_on_branch(demo: Path, branch: str, merge_base: str) -> list[tuple[str, str]]:
+    """Return (backport_commit_sha, original_sha) pairs on branch after merge-base.
+
+    backport_commit_sha is the SHA of the commit on the release branch that
+    contains the trailer; original_sha is the SHA it references.
+    """
+    # Use a separator line containing the SHA so we can parse it reliably.
+    # Format: one line of "COMMIT:<sha>", then the body (%B), then a blank
+    # line (git adds one between entries when %B is used).
     result = git(
-        ["log", f"{merge_base}..{branch}", "--format=%B"],
+        ["log", f"{merge_base}..{branch}", "--format=COMMIT:%H%n%B"],
         cwd=demo,
     )
-    found: list[str] = []
+    found: list[tuple[str, str]] = []
+    current_commit = ""
     for line in result.stdout.splitlines():
+        if line.startswith("COMMIT:"):
+            current_commit = line[7:].strip()
+            continue
         # "(cherry picked from commit <sha>)"
         m = re.search(r"\(cherry picked from commit ([0-9a-f]+)\)", line)
-        if m:
-            found.append(m.group(1))
+        if m and current_commit:
+            found.append((current_commit, m.group(1)))
         # "Backport of <sha>"
         m = re.search(r"Backport of ([0-9a-f]+)", line)
-        if m:
-            found.append(m.group(1))
+        if m and current_commit:
+            found.append((current_commit, m.group(1)))
     return found
 
 
-def _classify(demo: Path, sha: str, branch: str, backported_shas: list[str]) -> str:
+def _classify(demo: Path, sha: str, branch: str, backported_pairs: list[tuple[str, str]]) -> str:
     """Classify a fix commit for one branch."""
-    # a) backported: check trailer SHAs
-    for bsha in backported_shas:
-        if bsha.startswith(sha) or sha.startswith(bsha):
-            return f"backported:{bsha[:7]}"
+    # a) backported: check trailer SHAs — report the backport commit SHA
+    for bp_commit_sha, orig_sha in backported_pairs:
+        if orig_sha.startswith(sha) or sha.startswith(orig_sha):
+            return f"backported:{bp_commit_sha[:7]}"
 
     # b) present: git merge-base --is-ancestor OR git cherry shows "-"
     anc = git(
