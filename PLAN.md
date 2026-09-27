@@ -15,7 +15,7 @@
 - [x] T02 Scenario generator + policy documents
 - [x] T03 CLI part 1: `audit`, `try`
 - [x] T04 CLI part 2: `verify`, `report`
-- [ ] T05 Scope fixes from documents (Plan mode)
+- [x] T05 Scope fixes from documents (Plan mode)
 - [ ] T06 Adaptive ports with parallel subagents (Ferry mode)
 - [ ] T07 Dashboard polish + GitHub Pages
 - [ ] T08 Final clean end-to-end run (recorded)
