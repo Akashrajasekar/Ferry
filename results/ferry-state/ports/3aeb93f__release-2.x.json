@@ -1,0 +1,13 @@
+{
+  "sha": "3aeb93fca9ad3e836cd132d399d24e447b55b44c",
+  "branch": "release/2.x",
+  "status": "ported",
+  "attempts": 2,
+  "adaptations": [
+    "Import path adapted: ledger.money.rounding (main subpackage) → ledger.money (release/2.x flat module)",
+    "Function already named round_amount on release/2.x (renamed from round_money in v2) — no rename needed in fix or test",
+    "rounding.py on main changed ROUND_HALF_UP → ROUND_HALF_EVEN; same change applied to money.py on release/2.x",
+    "test_round_amount_basic in tests/test_money.py updated: assertion for 1.005 changed from 1.01 to 1.00 — this test was testing the old ROUND_HALF_UP behaviour that the fix replaces; 1.005 under ROUND_HALF_EVEN rounds to 1.00 (0 is even)"
+  ],
+  "blocker": null
+}

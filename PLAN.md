@@ -16,7 +16,7 @@
 - [x] T03 CLI part 1: `audit`, `try`
 - [x] T04 CLI part 2: `verify`, `report`
 - [x] T05 Scope fixes from documents (Plan mode)
-- [ ] T06 Adaptive ports with parallel subagents (Ferry mode)
+- [x] T06 Adaptive ports with parallel subagents (Ferry mode)
 - [ ] T07 Dashboard polish + GitHub Pages
 - [ ] T08 Final clean end-to-end run (recorded)
 - [ ] H1–H6 Human submission steps (Section 9)

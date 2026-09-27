@@ -11,7 +11,7 @@
         "file": "HEAD and modified in 70183af (fix(security): prevent path traversal in invoice export (FSA-2026-001)).  Version 70183af (fix(security): prevent path traversal in invoice export (FSA-2026-001)) of ledger/exporters/pdf.py left in tree."
       }
     ],
-    "seconds": 0.53
+    "seconds": 0.69
   },
   {
     "sha": "70183af0331556ac6263e4920697121416beefde",
@@ -25,7 +25,7 @@
         "file": "HEAD and modified in 70183af (fix(security): prevent path traversal in invoice export (FSA-2026-001)).  Version 70183af (fix(security): prevent path traversal in invoice export (FSA-2026-001)) of ledger/exporters/pdf.py left in tree."
       }
     ],
-    "seconds": 1.16
+    "seconds": 1.45
   },
   {
     "sha": "3aeb93fca9ad3e836cd132d399d24e447b55b44c",
@@ -39,7 +39,7 @@
         "file": "ledger/money.py"
       }
     ],
-    "seconds": 0.56
+    "seconds": 0.64
   },
   {
     "sha": "208089284e3a64b739fd8513d77c13577ca8fda7",
@@ -48,6 +48,6 @@
     "worktree": "workspace/worktrees/2080892__release-2.x",
     "backport_branch": "backport/2080892/release-2.x",
     "conflicts": [],
-    "seconds": 1.92
+    "seconds": 2.5
   }
 ]
