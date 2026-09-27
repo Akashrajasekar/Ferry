@@ -1,5 +1,6 @@
 {
   "manual_baseline_minutes": 16.4,
+  "ferry_run_minutes": null,
   "bobcoins_by_task": {
     "T01": 1.0,
     "T02": 3.59,
@@ -8,5 +9,6 @@
     "T05": 0.827,
     "T06": 4.28,
     "T07": 11.47
+  },
   "notes": "Manual baseline: backport of Fix A (FSA-2026-001) to release/1.x by hand, no AI coding tools, following written step-by-step guidance. Included resolving a modify/delete conflict, adapting the fix to the 1.x API, and porting the regression test. Guidance makes this a conservative (faster than typical) baseline."
 }
