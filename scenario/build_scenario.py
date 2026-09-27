@@ -103,7 +103,7 @@ def round_money(x: float) -> float:
 """
 
 EXPORT_V09 = """\
-\"\"\"export.py – invoice export (v0.9)\"\"\"
+\"\"\"ledger/export.py – invoice export (v0.9)\"\"\"
 from pathlib import Path
 
 
@@ -210,7 +210,7 @@ def line_item_total(qty: int, unit_price: float) -> float:
 """
 
 EXPORT_V1 = """\
-\"\"\"export.py – invoice export (v1)\"\"\"
+\"\"\"ledger/export.py – invoice export (v1)\"\"\"
 from pathlib import Path
 
 
@@ -296,7 +296,7 @@ def line_item_total(qty: int, unit_price: Decimal) -> Decimal:
 """
 
 EXPORT_V2 = """\
-\"\"\"export.py – invoice export (v2)\"\"\"
+\"\"\"ledger/export.py – invoice export (v2)\"\"\"
 from pathlib import Path
 
 
@@ -374,7 +374,7 @@ def step3_v2(day: int) -> None:
 # Step 4 – gap fixes on main
 # ---------------------------------------------------------------------------
 EXPORT_EMPTY_ITEMS = """\
-\"\"\"export.py – invoice export (v2 + empty-items fix)\"\"\"
+\"\"\"ledger/export.py – invoice export (v2 + empty-items fix)\"\"\"
 from pathlib import Path
 
 
@@ -413,7 +413,7 @@ def test_empty_items(tmp_path):
 """
 
 EXPORT_ESCAPE = """\
-\"\"\"export.py – invoice export (v2 + security: escape customer name)\"\"\"
+\"\"\"ledger/export.py – invoice export (v2 + security: escape customer name)\"\"\"
 from pathlib import Path
 import html
 
@@ -922,7 +922,7 @@ def main() -> None:
     # Build a compatible version of the empty-items fix for release/2.x
     # (release/2.x still has the v2 export.py – we patch that one)
     EXPORT_EMPTY_V2 = """\
-\"\"\"export.py – invoice export (v2 + empty-items fix)\"\"\"
+\"\"\"ledger/export.py – invoice export (v2 + empty-items fix)\"\"\"
 from pathlib import Path
 
 
