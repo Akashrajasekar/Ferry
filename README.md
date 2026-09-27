@@ -2,8 +2,8 @@
 
 **Ferry backports fixes from `main` into every supported release branch, adapts them where the code has diverged using parallel IBM Bob subagents, and proves every port with fail-before / pass-after tests.**
 
-- 🌐 **Live dashboard:** https://akashrajasekar.github.io/Ferry/
-- 🎬 **Demo video:** {{VIDEO_URL}}
+- 🌐 **Live dashboard:** https://ferry-snowy.vercel.app/
+- 🎬 **Demo video:** https://drive.google.com/file/d/1tTNnEEV-8XBI5H33Sfjrz62Q491XwMWN/view?usp=sharing
 - 🏆 Built for the IBM Bob 2.0 Hackathon (lablab.ai, September 2026)
 
 ---
@@ -45,7 +45,7 @@ Ferry routes judgment calls to a human reviewer. It flags:
 | Conflicted ports adapted by parallel Bob subagents   | 3                                                      |
 | Review flags raised                                  | 2                                                      |
 | One conflicted backport by hand                      | 16.4 min (guided, conservative baseline)               |
-| Three conflicted backports with Ferry                | {{T06_MINUTES}} min                                    |
+| Three conflicted backports with Ferry                | 3 ports adapted in parallel                             |
 | Total Bobcoins (building + running Ferry)            | 30.6                                                   |
 
 ## Quick start
@@ -57,13 +57,13 @@ pip install -r requirements.txt
 python -m ferry scenario     # build the demo repo + policy documents
 python -m ferry audit        # find fixes missing from release branches
 
-# Scope: done by Bob in Plan mode (task T05 in PLAN.md) -> .ferry/plan.json
+# Scope: done by Bob in Plan mode (task T05) -> .ferry/plan.json
 # To reuse Bob's saved decisions instead, copy them into place:
 #   macOS/Linux:  cp results/ferry-state/plan.json .ferry/plan.json
 #   Windows:      copy results\ferry-state\plan.json .ferry\plan.json
 
 python -m ferry try          # plain cherry-picks
-# Adapt: in Bob IDE, switch to the Ferry mode and run the prompt in PLAN.md (task T06)
+# Adapt: in Bob IDE, switch to the Ferry mode and run the adapt prompt (task T06)
 python -m ferry verify       # prove every port
 python -m ferry report       # build docs/index.html
 ```
@@ -77,7 +77,7 @@ Run Ferry's own tests with `python -m pytest -q`.
 - **Rules:** [`AGENTS.md`](AGENTS.md) and [`.bob/rules/`](.bob/rules/).
 - **Document understanding:** Bob read the policy PDF and advisory DOCX to scope every port with citations.
 - **Parallel subagents:** one per conflicted (fix, branch) pair, each in an isolated context.
-- **Built with Bob:** the CLI, verification logic, dashboard generator, demo scenario and tests were written with Bob in Agent mode. The plan Bob followed is in [`PLAN.md`](PLAN.md), and session summaries are in [`bob_sessions/`](bob_sessions/).
+- **Built with Bob:** the CLI, verification logic, dashboard generator, demo scenario and tests were written with Bob in Agent mode. Session summaries are in [`bob_sessions/`](bob_sessions/).
 
 ## Repository layout
 
