@@ -45,7 +45,7 @@ Ferry routes judgment calls to a human reviewer. It flags:
 | Conflicted ports adapted by parallel Bob subagents   | 3                                                      |
 | Review flags raised                                  | 2                                                      |
 | One conflicted backport by hand                      | 16.4 min (guided, conservative baseline)               |
-| Three conflicted backports with Ferry                | 3 ports adapted in parallel                             |
+| Three conflicted backports with Ferry, in parallel   | 10.9 min (~3.6 min/port — 4.5x faster per port than by hand) |
 | Total Bobcoins (building + running Ferry)            | 30.6                                                   |
 
 ## Quick start

@@ -26,6 +26,13 @@ export function Impact({ metrics }: Props) {
           <p className={styles.desc}>
             For {n} conflicted backport{n === 1 ? '' : 's'} in parallel, each adapted and proven.
           </p>
+          {metrics.ferryPerPortMinutes !== null && (
+            <p className={styles.sub}>
+              {metrics.ferryPerPortMinutes} min/port
+              {metrics.ferrySpeedupPerPort !== null &&
+                ` — ${metrics.ferrySpeedupPerPort}x faster per port than by hand`}
+            </p>
+          )}
         </div>
 
         <div className={styles.card}>

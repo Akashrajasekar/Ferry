@@ -85,6 +85,8 @@ export interface Metrics {
   bobcoinsPerAdaptedPort: number | null;
   manualBaselineMinutes: number | null;
   ferryRunMinutes: number | null;
+  ferryPerPortMinutes: number | null;
+  ferrySpeedupPerPort: number | null;
   conflictedPorts: number;
 }
 
@@ -359,6 +361,20 @@ function buildMetrics(cells: Cell[]): Metrics {
 
   const conflictedPorts = tryLog.filter((t) => t.status === 'conflict').length;
 
+  const manualBaselineMinutes = metrics.manual_baseline_minutes ?? null;
+  const ferryRunMinutes = metrics.ferry_run_minutes ?? null;
+  const ferryPerPortMinutesRaw =
+    ferryRunMinutes !== null && conflictedPorts > 0 ? ferryRunMinutes / conflictedPorts : null;
+  const ferryPerPortMinutes =
+    ferryPerPortMinutesRaw !== null ? Math.round(ferryPerPortMinutesRaw * 10) / 10 : null;
+  // Speedup is derived from the unrounded per-port time so it doesn't drift
+  // from displaying the rounded 3.6 min/port figure (double-rounding would
+  // give 4.6x here instead of the correct 4.5x).
+  const ferrySpeedupPerPort =
+    ferryPerPortMinutesRaw !== null && manualBaselineMinutes !== null && ferryPerPortMinutesRaw > 0
+      ? Math.round((manualBaselineMinutes / ferryPerPortMinutesRaw) * 10) / 10
+      : null;
+
   return {
     fixesAudited: audit.length,
     missingSecurityFixes,
@@ -372,8 +388,10 @@ function buildMetrics(cells: Cell[]): Metrics {
     reviewFlags,
     bobcoinsTotal,
     bobcoinsPerAdaptedPort,
-    manualBaselineMinutes: metrics.manual_baseline_minutes ?? null,
-    ferryRunMinutes: metrics.ferry_run_minutes ?? null,
+    manualBaselineMinutes,
+    ferryRunMinutes,
+    ferryPerPortMinutes,
+    ferrySpeedupPerPort,
     conflictedPorts,
   };
 }

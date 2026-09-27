@@ -23,7 +23,7 @@
 - Scoping from the documents matched the policy for all 12 fix × branch decisions, each with a citation.
 - 4 ports were proven: 1 clean cherry-pick (0 Bobcoins) and 3 conflicted ports adapted by 3 parallel subagents, all passing fail-before, pass-after and the full suite.
 - 2 review flags were raised: one behaviour change needing sign-off, and one precision check on an already-passing test.
-- Backporting one conflicted fix by hand took **16.4 minutes** (a conservative, guided baseline). Ferry adapted and proved **three** conflicted ports **in parallel**.
+- Backporting one conflicted fix by hand took **16.4 minutes** (a conservative, guided baseline). Ferry adapted and proved **three** conflicted ports in parallel in **10.9 minutes** — about **3.6 minutes per port**, roughly **4.5x faster per port** than doing it by hand.
 
 **Impact.** Proven backports shorten the window in which older releases stay exposed, and make every decision auditable: why a branch was skipped, what was adapted, and which test proves it. Next: a GitHub Action running `audit` on every merge.
 
