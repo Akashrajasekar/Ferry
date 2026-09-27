@@ -2,6 +2,7 @@ import { useId } from 'react';
 import styles from './ReleaseRiver.module.css';
 import type { Cell, Fix } from '../lib/model';
 import { cellKeyFor, isEndOfLife, supportStatusFor } from '../lib/model';
+import { plainStatusFor } from '../content';
 
 interface Props {
   fixes: Fix[];
@@ -36,6 +37,14 @@ export function ReleaseRiver({ fixes, branches, cellsByKey }: Props) {
 
   return (
     <div className={styles.wrap}>
+      <p className={styles.caption}>
+        <strong>How to read this:</strong> each line is a version of the product.{' '}
+        <strong>main</strong> is the newest; the lines below are older versions customers still
+        run. Dots <strong>A–D</strong> are fixes made on main, and the dashed lines show Ferry
+        carrying each fix down to older versions. <strong>✓</strong> means the copied fix was
+        tested and works.
+      </p>
+
       <svg
         className={styles.svg}
         viewBox={`0 0 ${SVG_WIDTH} ${svgHeight}`}
@@ -57,9 +66,10 @@ export function ReleaseRiver({ fixes, branches, cellsByKey }: Props) {
         />
         <text x={16} y={mainY - 7} className={styles.laneLabel} fill="var(--bob-light)">
           main
+          <title>{supportStatusFor('main')}</title>
         </text>
         <text x={16} y={mainY + 15} className={styles.laneStatus}>
-          {supportStatusFor('main')}
+          {plainStatusFor('main')}
         </text>
 
         {fixes.map((fix, i) => (
@@ -99,9 +109,10 @@ export function ReleaseRiver({ fixes, branches, cellsByKey }: Props) {
                 fill={eol ? 'var(--muted)' : 'var(--text-2)'}
               >
                 {branch}
+                <title>{supportStatusFor(branch)}</title>
               </text>
               <text x={16} y={y + 15} className={styles.laneStatus}>
-                {supportStatusFor(branch)}
+                {plainStatusFor(branch)}
               </text>
 
               {fixes.map((fix, fi) => {

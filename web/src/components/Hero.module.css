@@ -33,6 +33,15 @@
   line-height: 1.6;
 }
 
+.subtext + .subtext {
+  margin-top: 14px;
+}
+
+.subtext strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
 .callout {
   margin-top: 28px;
   display: flex;
@@ -117,5 +126,20 @@
   .grid {
     grid-template-columns: 1.05fr 1fr;
     gap: 56px;
+  }
+
+  /* Tighter vertical rhythm so the hero still clears the fold once the
+     subtext runs to two paragraphs and the river card gains its caption. */
+  .hero {
+    padding-top: clamp(28px, 3vw, 48px);
+    padding-bottom: clamp(32px, 3vw, 52px);
+  }
+
+  .callout {
+    margin-top: 20px;
+  }
+
+  .ctaRow {
+    margin-top: 22px;
   }
 }

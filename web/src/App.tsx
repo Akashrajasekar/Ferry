@@ -1,5 +1,6 @@
 import { Nav } from './components/Nav';
 import { Hero } from './components/Hero';
+import { HeroSteps } from './components/HeroSteps';
 import { MetricsStrip } from './components/MetricsStrip';
 import { RunSteps } from './components/RunSteps';
 import { ProofMatrix } from './components/ProofMatrix';
@@ -20,6 +21,9 @@ export default function App() {
       <Nav />
       <main id="main-content">
         <Hero vm={viewModel} />
+        <Reveal>
+          <HeroSteps />
+        </Reveal>
         <Reveal>
           <MetricsStrip metrics={viewModel.metrics} />
         </Reveal>

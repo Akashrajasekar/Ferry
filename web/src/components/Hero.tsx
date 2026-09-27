@@ -15,8 +15,15 @@ export function Hero({ vm }: Props) {
           <p className={styles.eyebrow}>AI BACKPORTING · PROVEN BY TESTS</p>
           <h1 className={styles.title}>A fix on main isn&rsquo;t a fix for your customers.</h1>
           <p className={styles.subtext}>
-            Until it reaches every release they run. Ferry carries each fix into every supported
-            branch, adapts it where the code has moved on, and proves every port with tests.
+            Software teams often support several versions of their product at the same time. When
+            a bug or security hole is fixed in the newest version, that fix has to be copied into
+            every older version customers still use. This is called <strong>backporting</strong> —
+            and it&rsquo;s slow, manual work, because older versions of the code look different.
+          </p>
+          <p className={styles.subtext}>
+            <strong>Ferry does it automatically:</strong> it finds fixes that older versions are
+            missing, uses IBM Bob to adapt each fix to the older code, and runs tests to prove
+            every copy works.
           </p>
 
           <div className={styles.callout}>

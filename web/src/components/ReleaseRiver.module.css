@@ -2,6 +2,18 @@
   width: 100%;
 }
 
+.caption {
+  margin: 0 0 16px;
+  font-size: 14px;
+  line-height: 1.55;
+  color: var(--text-2);
+}
+
+.caption strong {
+  color: var(--text);
+  font-weight: 600;
+}
+
 .svg {
   width: 100%;
   height: auto;
