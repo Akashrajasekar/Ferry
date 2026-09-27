@@ -12,7 +12,18 @@
       "passed": 5,
       "failed": 0
     },
-    "seconds": 3.28,
+    "tests": [
+      {
+        "id": "tests/test_templates.py::test_header_spelling",
+        "failed_before": true,
+        "passed_after": true,
+        "proves_fix": true,
+        "kind": "regression"
+      }
+    ],
+    "flags": [],
+    "review_required": false,
+    "seconds": 5.12,
     "fix_diff": "commit 208089284e3a64b739fd8513d77c13577ca8fda7\nAuthor: Ferry Bot <ferry@example.com>\nDate:   Wed Jan 10 09:00:00 2024 +0000\n\n    fix: correct typo in invoice header\n\ndiff --git a/ledger/templates.py b/ledger/templates.py\nindex fccb74a..46c41ed 100644\n--- a/ledger/templates.py\n+++ b/ledger/templates.py\n@@ -1,3 +1,3 @@\n \"\"\"templates.py \u00e2\u20ac\u201c shared constants.\"\"\"\n \n-HEADER = \"Invocie\"  # NOTE: intentional typo \u00e2\u20ac\u201c do NOT change this line\n+HEADER = \"Invoice\"\ndiff --git a/tests/test_templates.py b/tests/test_templates.py\nnew file mode 100644\nindex 0000000..0cda3bf\n--- /dev/null\n+++ b/tests/test_templates.py\n@@ -0,0 +1,6 @@\n+\"\"\"Regression test: invoice header spelling\"\"\"\n+from ledger.templates import HEADER\n+\n+\n+def test_header_spelling():\n+    assert HEADER == \"Invoice\", f\"Expected 'Invoice', got {HEADER!r}\"\n",
     "backport_diff": "commit 0d9df0150f2e6d648c5c0b26ccea0aacb672bd1e\nAuthor: Ferry Bot <ferry@example.com>\nDate:   Wed Jan 10 09:00:00 2024 +0000\n\n    fix: correct typo in invoice header\n    \n    (cherry picked from commit 208089284e3a64b739fd8513d77c13577ca8fda7)\n    \n    Backport of 208089284e3a64b739fd8513d77c13577ca8fda7\n\ndiff --git a/ledger/templates.py b/ledger/templates.py\nindex fccb74a..46c41ed 100644\n--- a/ledger/templates.py\n+++ b/ledger/templates.py\n@@ -1,3 +1,3 @@\n \"\"\"templates.py \u00e2\u20ac\u201c shared constants.\"\"\"\n \n-HEADER = \"Invocie\"  # NOTE: intentional typo \u00e2\u20ac\u201c do NOT change this line\n+HEADER = \"Invoice\"\ndiff --git a/tests/test_templates.py b/tests/test_templates.py\nnew file mode 100644\nindex 0000000..0cda3bf\n--- /dev/null\n+++ b/tests/test_templates.py\n@@ -0,0 +1,6 @@\n+\"\"\"Regression test: invoice header spelling\"\"\"\n+from ledger.templates import HEADER\n+\n+\n+def test_header_spelling():\n+    assert HEADER == \"Invoice\", f\"Expected 'Invoice', got {HEADER!r}\"\n"
   },
@@ -29,7 +40,40 @@
       "passed": 5,
       "failed": 0
     },
-    "seconds": 3.23,
+    "tests": [
+      {
+        "id": "tests/test_export_security.py::test_normal_export_still_works",
+        "failed_before": false,
+        "passed_after": true,
+        "proves_fix": false,
+        "kind": "preserves_behaviour"
+      },
+      {
+        "id": "tests/test_export_security.py::test_rejects_absolute_path",
+        "failed_before": false,
+        "passed_after": false,
+        "proves_fix": false,
+        "kind": "regression"
+      },
+      {
+        "id": "tests/test_export_security.py::test_rejects_path_traversal",
+        "failed_before": true,
+        "passed_after": true,
+        "proves_fix": true,
+        "kind": "regression"
+      }
+    ],
+    "flags": [
+      {
+        "kind": "test_passes_without_fix",
+        "tests": [
+          "tests/test_export_security.py::test_rejects_absolute_path"
+        ],
+        "reason": "expects an error that already happens without the fix, so it proves nothing"
+      }
+    ],
+    "review_required": true,
+    "seconds": 5.39,
     "fix_diff": "commit 70183af0331556ac6263e4920697121416beefde\nAuthor: Ferry Bot <ferry@example.com>\nDate:   Mon Jan 8 09:00:00 2024 +0000\n\n    fix(security): prevent path traversal in invoice export (FSA-2026-001)\n\ndiff --git a/ledger/exporters/pdf.py b/ledger/exporters/pdf.py\nindex 197e094..e9a54cf 100644\n--- a/ledger/exporters/pdf.py\n+++ b/ledger/exporters/pdf.py\n@@ -1,4 +1,5 @@\n-\"\"\"ledger/exporters/pdf.py \u00e2\u20ac\u201c invoice export (v3)\"\"\"\n+\"\"\"ledger/exporters/pdf.py \u00e2\u20ac\u201c invoice export (v3 + FSA-2026-001 fix)\"\"\"\n+import os\n from pathlib import Path\n import html\n \n@@ -6,9 +7,13 @@ import html\n def export_invoice(invoice: dict, filename: str, out_dir: str) -> Path:\n     \"\"\"Write invoice as plain text to out_dir/filename.\n \n-    Validates filename: must not be absolute and must not contain '..'.\n-    Validates out_dir: resolved dest must be inside out_dir.\n+    Security: rejects absolute paths and path traversal in *filename*.\n+    The resolved destination must be inside *out_dir*.\n     \"\"\"\n+    if Path(filename).is_absolute():\n+        raise ValueError(f\"filename must be relative, got {filename!r}\")\n+    if \"..\" in Path(filename).parts:\n+        raise ValueError(f\"filename must not contain '..', got {filename!r}\")\n     dest_dir = Path(out_dir).resolve()\n     dest = (dest_dir / filename).resolve()\n     if not str(dest).startswith(str(dest_dir)):\ndiff --git a/tests/test_export_security.py b/tests/test_export_security.py\nnew file mode 100644\nindex 0000000..86015aa\n--- /dev/null\n+++ b/tests/test_export_security.py\n@@ -0,0 +1,21 @@\n+\"\"\"Regression test: path traversal prevention (FSA-2026-001)\"\"\"\n+import pytest\n+from ledger.exporters.pdf import export_invoice\n+\n+\n+def test_rejects_path_traversal(tmp_path):\n+    inv = {\"customer\": \"Acme\", \"items\": []}\n+    with pytest.raises((ValueError, OSError)):\n+        export_invoice(inv, \"../evil.txt\", str(tmp_path))\n+\n+\n+def test_rejects_absolute_path(tmp_path):\n+    inv = {\"customer\": \"Acme\", \"items\": []}\n+    with pytest.raises((ValueError, OSError)):\n+        export_invoice(inv, \"/etc/passwd\", str(tmp_path))\n+\n+\n+def test_normal_export_still_works(tmp_path):\n+    inv = {\"customer\": \"Acme\", \"items\": [{\"name\": \"X\", \"amount\": 1.0, \"qty\": 1}]}\n+    dest = export_invoice(inv, \"ok.txt\", str(tmp_path))\n+    assert dest.exists()\n",
     "backport_diff": "commit e28a01088d1d4bb238c4a0805112c10f56a13f57\nAuthor: Ferry Bot <ferry@example.com>\nDate:   Sun Sep 27 12:26:29 2026 +0400\n\n    fix(security): prevent path traversal in invoice export (FSA-2026-001) [release/1.x]\n    \n    Backport of 70183af0331556ac6263e4920697121416beefde\n\ndiff --git a/ledger/export.py b/ledger/export.py\nindex cc66f4c..b14045a 100644\n--- a/ledger/export.py\n+++ b/ledger/export.py\n@@ -1,9 +1,17 @@\n-\"\"\"ledger/export.py \u00e2\u20ac\u201c invoice export (v1)\"\"\"\n+\"\"\"ledger/export.py \u00e2\u20ac\u201c invoice export (v1 + FSA-2026-001 fix)\"\"\"\n from pathlib import Path\n \n \n def export_invoice(invoice: dict, path: str) -> None:\n-    \"\"\"Write invoice as plain text to *path*.\"\"\"\n+    \"\"\"Write invoice as plain text to *path*.\n+\n+    Security: rejects absolute paths and path traversal in *path*.\n+    The resolved destination must remain inside the path's parent directory.\n+    \"\"\"\n+    if Path(path).is_absolute():\n+        raise ValueError(f\"path must be relative, got {path!r}\")\n+    if \"..\" in Path(path).parts:\n+        raise ValueError(f\"path must not contain '..', got {path!r}\")\n     out = Path(path)\n     lines = []\n     lines.append(f\"Customer: {invoice.get('customer', '')}\")\ndiff --git a/tests/test_export_security.py b/tests/test_export_security.py\nnew file mode 100644\nindex 0000000..a5f1d2b\n--- /dev/null\n+++ b/tests/test_export_security.py\n@@ -0,0 +1,32 @@\n+\"\"\"Regression test: path traversal prevention (FSA-2026-001)\n+\n+Ported from main's tests/test_export_security.py.\n+Adaptations:\n+  - Import changed from ledger.exporters.pdf to ledger.export (file moved/consolidated on release/1.x)\n+  - Function signature on release/1.x is export_invoice(invoice, path) \u00e2\u20ac\u201d no separate\n+    out_dir parameter \u00e2\u20ac\u201d so tests use a single combined path argument.\n+  - test_normal_export_still_works: removed 'qty' key from item dict (not required on v1\n+    API; kept 'name' and 'amount' which are the only required fields).\n+\"\"\"\n+import pytest\n+from ledger.export import export_invoice\n+\n+\n+def test_rejects_path_traversal(tmp_path):\n+    inv = {\"customer\": \"Acme\", \"items\": []}\n+    with pytest.raises((ValueError, OSError)):\n+        export_invoice(inv, \"../evil.txt\")\n+\n+\n+def test_rejects_absolute_path(tmp_path):\n+    inv = {\"customer\": \"Acme\", \"items\": []}\n+    with pytest.raises((ValueError, OSError)):\n+        export_invoice(inv, \"/etc/passwd\")\n+\n+\n+def test_normal_export_still_works(tmp_path):\n+    # out_dir parameter does not exist on release/1.x; path is the full output path\n+    inv = {\"customer\": \"Acme\", \"items\": [{\"name\": \"X\", \"amount\": 1.0}]}\n+    dest = tmp_path / \"ok.txt\"\n+    export_invoice(inv, str(dest))\n+    assert dest.exists()\n"
   },
@@ -46,7 +90,32 @@
       "passed": 7,
       "failed": 0
     },
-    "seconds": 3.25,
+    "tests": [
+      {
+        "id": "tests/test_export_security.py::test_normal_export_still_works",
+        "failed_before": false,
+        "passed_after": true,
+        "proves_fix": false,
+        "kind": "preserves_behaviour"
+      },
+      {
+        "id": "tests/test_export_security.py::test_rejects_absolute_path",
+        "failed_before": true,
+        "passed_after": true,
+        "proves_fix": true,
+        "kind": "regression"
+      },
+      {
+        "id": "tests/test_export_security.py::test_rejects_path_traversal",
+        "failed_before": true,
+        "passed_after": true,
+        "proves_fix": true,
+        "kind": "regression"
+      }
+    ],
+    "flags": [],
+    "review_required": false,
+    "seconds": 4.95,
     "fix_diff": "commit 70183af0331556ac6263e4920697121416beefde\nAuthor: Ferry Bot <ferry@example.com>\nDate:   Mon Jan 8 09:00:00 2024 +0000\n\n    fix(security): prevent path traversal in invoice export (FSA-2026-001)\n\ndiff --git a/ledger/exporters/pdf.py b/ledger/exporters/pdf.py\nindex 197e094..e9a54cf 100644\n--- a/ledger/exporters/pdf.py\n+++ b/ledger/exporters/pdf.py\n@@ -1,4 +1,5 @@\n-\"\"\"ledger/exporters/pdf.py \u00e2\u20ac\u201c invoice export (v3)\"\"\"\n+\"\"\"ledger/exporters/pdf.py \u00e2\u20ac\u201c invoice export (v3 + FSA-2026-001 fix)\"\"\"\n+import os\n from pathlib import Path\n import html\n \n@@ -6,9 +7,13 @@ import html\n def export_invoice(invoice: dict, filename: str, out_dir: str) -> Path:\n     \"\"\"Write invoice as plain text to out_dir/filename.\n \n-    Validates filename: must not be absolute and must not contain '..'.\n-    Validates out_dir: resolved dest must be inside out_dir.\n+    Security: rejects absolute paths and path traversal in *filename*.\n+    The resolved destination must be inside *out_dir*.\n     \"\"\"\n+    if Path(filename).is_absolute():\n+        raise ValueError(f\"filename must be relative, got {filename!r}\")\n+    if \"..\" in Path(filename).parts:\n+        raise ValueError(f\"filename must not contain '..', got {filename!r}\")\n     dest_dir = Path(out_dir).resolve()\n     dest = (dest_dir / filename).resolve()\n     if not str(dest).startswith(str(dest_dir)):\ndiff --git a/tests/test_export_security.py b/tests/test_export_security.py\nnew file mode 100644\nindex 0000000..86015aa\n--- /dev/null\n+++ b/tests/test_export_security.py\n@@ -0,0 +1,21 @@\n+\"\"\"Regression test: path traversal prevention (FSA-2026-001)\"\"\"\n+import pytest\n+from ledger.exporters.pdf import export_invoice\n+\n+\n+def test_rejects_path_traversal(tmp_path):\n+    inv = {\"customer\": \"Acme\", \"items\": []}\n+    with pytest.raises((ValueError, OSError)):\n+        export_invoice(inv, \"../evil.txt\", str(tmp_path))\n+\n+\n+def test_rejects_absolute_path(tmp_path):\n+    inv = {\"customer\": \"Acme\", \"items\": []}\n+    with pytest.raises((ValueError, OSError)):\n+        export_invoice(inv, \"/etc/passwd\", str(tmp_path))\n+\n+\n+def test_normal_export_still_works(tmp_path):\n+    inv = {\"customer\": \"Acme\", \"items\": [{\"name\": \"X\", \"amount\": 1.0, \"qty\": 1}]}\n+    dest = export_invoice(inv, \"ok.txt\", str(tmp_path))\n+    assert dest.exists()\n",
     "backport_diff": "commit 02585feda8ca526b8574f1bbabf1f682c977572e\nAuthor: Ferry Bot <ferry@example.com>\nDate:   Sun Sep 27 12:26:27 2026 +0400\n\n    fix(security): prevent path traversal in invoice export (FSA-2026-001) [release/2.x]\n    \n    Backport of 70183af0331556ac6263e4920697121416beefde\n\ndiff --git a/ledger/export.py b/ledger/export.py\nindex b0cf6bf..7f15fc5 100644\n--- a/ledger/export.py\n+++ b/ledger/export.py\n@@ -1,9 +1,22 @@\n-\"\"\"ledger/export.py \u00e2\u20ac\u201c invoice export (v2 + empty-items fix)\"\"\"\n+\"\"\"ledger/export.py \u00e2\u20ac\u201c invoice export (v2 + empty-items fix + FSA-2026-001 fix)\"\"\"\n+import os\n from pathlib import Path\n \n \n def export_invoice(invoice: dict, filename: str, out_dir: str) -> Path:\n-    \"\"\"Write invoice as plain text.\"\"\"\n+    \"\"\"Write invoice as plain text.\n+\n+    Security: rejects absolute paths and path traversal in *filename*.\n+    The resolved destination must be inside *out_dir*.\n+    \"\"\"\n+    if Path(filename).is_absolute():\n+        raise ValueError(f\"filename must be relative, got {filename!r}\")\n+    if \"..\" in Path(filename).parts:\n+        raise ValueError(f\"filename must not contain '..', got {filename!r}\")\n+    dest_dir = Path(out_dir).resolve()\n+    dest = (dest_dir / filename).resolve()\n+    if not str(dest).startswith(str(dest_dir)):\n+        raise ValueError(f\"filename escapes out_dir: {filename!r}\")\n     dest = Path(out_dir) / filename\n     dest.parent.mkdir(parents=True, exist_ok=True)\n     lines = []\ndiff --git a/tests/test_export_security.py b/tests/test_export_security.py\nnew file mode 100644\nindex 0000000..405c4d9\n--- /dev/null\n+++ b/tests/test_export_security.py\n@@ -0,0 +1,26 @@\n+\"\"\"Regression test: path traversal prevention (FSA-2026-001)\n+Ported from main's tests/test_export_security.py.\n+Adapted to release/2.x: import from ledger.export (not ledger.exporters.pdf).\n+The signature on this branch is export_invoice(invoice, filename, out_dir) \u00e2\u20ac\u201c\n+identical to main, so no parameter adaptations were needed.\n+\"\"\"\n+import pytest\n+from ledger.export import export_invoice\n+\n+\n+def test_rejects_path_traversal(tmp_path):\n+    inv = {\"customer\": \"Acme\", \"items\": []}\n+    with pytest.raises((ValueError, OSError)):\n+        export_invoice(inv, \"../evil.txt\", str(tmp_path))\n+\n+\n+def test_rejects_absolute_path(tmp_path):\n+    inv = {\"customer\": \"Acme\", \"items\": []}\n+    with pytest.raises((ValueError, OSError)):\n+        export_invoice(inv, \"/etc/passwd\", str(tmp_path))\n+\n+\n+def test_normal_export_still_works(tmp_path):\n+    inv = {\"customer\": \"Acme\", \"items\": [{\"name\": \"X\", \"amount\": 1.0, \"qty\": 1}]}\n+    dest = export_invoice(inv, \"ok.txt\", str(tmp_path))\n+    assert dest.exists()\n"
   },
@@ -63,7 +132,33 @@
       "passed": 5,
       "failed": 0
     },
-    "seconds": 3.22,
+    "tests": [
+      {
+        "id": "tests/test_money.py::test_round_amount_basic",
+        "failed_before": true,
+        "passed_after": true,
+        "proves_fix": true,
+        "kind": "regression"
+      },
+      {
+        "id": "tests/test_rounding.py::test_half_even",
+        "failed_before": true,
+        "passed_after": true,
+        "proves_fix": true,
+        "kind": "regression"
+      }
+    ],
+    "flags": [
+      {
+        "kind": "existing_test_modified",
+        "file": "tests/test_money.py",
+        "functions": [
+          "test_round_amount_basic"
+        ]
+      }
+    ],
+    "review_required": true,
+    "seconds": 5.83,
     "fix_diff": "commit 3aeb93fca9ad3e836cd132d399d24e447b55b44c\nAuthor: Ferry Bot <ferry@example.com>\nDate:   Tue Jan 9 09:00:00 2024 +0000\n\n    fix: use banker's rounding for currency\n\ndiff --git a/ledger/money/rounding.py b/ledger/money/rounding.py\nindex 5b2e6dd..8621476 100644\n--- a/ledger/money/rounding.py\n+++ b/ledger/money/rounding.py\n@@ -1,10 +1,10 @@\n-\"\"\"ledger/money/rounding.py \u00e2\u20ac\u201c monetary rounding (v3)\"\"\"\n-from decimal import Decimal, ROUND_HALF_UP\n+\"\"\"ledger/money/rounding.py \u00e2\u20ac\u201c monetary rounding (v3 + banker's rounding fix)\"\"\"\n+from decimal import Decimal, ROUND_HALF_EVEN\n \n \n def round_amount(x: Decimal) -> Decimal:\n-    \"\"\"Round Decimal to 2 decimal places (ROUND_HALF_UP).\"\"\"\n-    return x.quantize(Decimal(\"0.01\"), rounding=ROUND_HALF_UP)\n+    \"\"\"Round Decimal to 2 decimal places using ROUND_HALF_EVEN (banker's rounding).\"\"\"\n+    return x.quantize(Decimal(\"0.01\"), rounding=ROUND_HALF_EVEN)\n \n \n def line_item_total(qty: int, unit_price: Decimal) -> Decimal:\ndiff --git a/tests/test_rounding.py b/tests/test_rounding.py\nnew file mode 100644\nindex 0000000..c6046ce\n--- /dev/null\n+++ b/tests/test_rounding.py\n@@ -0,0 +1,12 @@\n+\"\"\"Regression test: banker's rounding (ROUND_HALF_EVEN)\"\"\"\n+from decimal import Decimal\n+from ledger.money.rounding import round_amount\n+\n+\n+def test_half_even():\n+    # 0.5 rounds to nearest even: 0.5 -> 0.0 is wrong; 2.5 -> 2 (even)\n+    assert round_amount(Decimal(\"2.5\")) == Decimal(\"2.50\")\n+    # 2.125 -> 2.12 (2 is even)\n+    assert round_amount(Decimal(\"2.125\")) == Decimal(\"2.12\")\n+    # 2.135 -> 2.14 (4 is even)\n+    assert round_amount(Decimal(\"2.135\")) == Decimal(\"2.14\")\n",
     "backport_diff": "commit 2728cd54d7e838ed6a0c7a0e30bb3f7bd8c721f6\nAuthor: Ferry Bot <ferry@example.com>\nDate:   Sun Sep 27 12:26:29 2026 +0400\n\n    fix: use banker's rounding for currency [release/2.x]\n    \n    Backport of 3aeb93fca9ad3e836cd132d399d24e447b55b44c\n\ndiff --git a/ledger/money.py b/ledger/money.py\nindex f2fc348..3b85f19 100644\n--- a/ledger/money.py\n+++ b/ledger/money.py\n@@ -1,10 +1,10 @@\n \"\"\"money.py \u00e2\u20ac\u201c monetary helpers (v2)\"\"\"\n-from decimal import Decimal, ROUND_HALF_UP\n+from decimal import Decimal, ROUND_HALF_EVEN\n \n \n def round_amount(x: Decimal) -> Decimal:\n-    \"\"\"Round Decimal to 2 decimal places (ROUND_HALF_UP).\"\"\"\n-    return x.quantize(Decimal(\"0.01\"), rounding=ROUND_HALF_UP)\n+    \"\"\"Round Decimal to 2 decimal places using ROUND_HALF_EVEN (banker's rounding).\"\"\"\n+    return x.quantize(Decimal(\"0.01\"), rounding=ROUND_HALF_EVEN)\n \n \n def line_item_total(qty: int, unit_price: Decimal) -> Decimal:\ndiff --git a/tests/test_money.py b/tests/test_money.py\nindex e744afb..30001e8 100644\n--- a/tests/test_money.py\n+++ b/tests/test_money.py\n@@ -4,7 +4,8 @@ from ledger.money import round_amount, line_item_total\n \n \n def test_round_amount_basic():\n-    assert round_amount(Decimal(\"1.005\")) == Decimal(\"1.01\")\n+    # Updated for banker's rounding (ROUND_HALF_EVEN): 1.005 rounds to 1.00 (0 is even)\n+    assert round_amount(Decimal(\"1.005\")) == Decimal(\"1.00\")\n     assert round_amount(Decimal(\"2.344\")) == Decimal(\"2.34\")\n \n \ndiff --git a/tests/test_rounding.py b/tests/test_rounding.py\nnew file mode 100644\nindex 0000000..1d537fa\n--- /dev/null\n+++ b/tests/test_rounding.py\n@@ -0,0 +1,12 @@\n+\"\"\"Regression test: banker's rounding (ROUND_HALF_EVEN)\"\"\"\n+from decimal import Decimal\n+from ledger.money import round_amount\n+\n+\n+def test_half_even():\n+    # 0.5 rounds to nearest even: 0.5 -> 0.0 is wrong; 2.5 -> 2 (even)\n+    assert round_amount(Decimal(\"2.5\")) == Decimal(\"2.50\")\n+    # 2.125 -> 2.12 (2 is even)\n+    assert round_amount(Decimal(\"2.125\")) == Decimal(\"2.12\")\n+    # 2.135 -> 2.14 (4 is even)\n+    assert round_amount(Decimal(\"2.135\")) == Decimal(\"2.14\")\n"
   },
@@ -83,6 +178,9 @@
       "passed": 0,
       "failed": 0
     },
+    "tests": [],
+    "flags": [],
+    "review_required": false,
     "seconds": 0.0
   },
   {
@@ -101,6 +199,9 @@
       "passed": 0,
       "failed": 0
     },
+    "tests": [],
+    "flags": [],
+    "review_required": false,
     "seconds": 0.0
   },
   {
@@ -119,6 +220,9 @@
       "passed": 0,
       "failed": 0
     },
+    "tests": [],
+    "flags": [],
+    "review_required": false,
     "seconds": 0.0
   },
   {
@@ -137,6 +241,9 @@
       "passed": 0,
       "failed": 0
     },
+    "tests": [],
+    "flags": [],
+    "review_required": false,
     "seconds": 0.0
   },
   {
@@ -155,6 +262,9 @@
       "passed": 0,
       "failed": 0
     },
+    "tests": [],
+    "flags": [],
+    "review_required": false,
     "seconds": 0.0
   },
   {
@@ -173,6 +283,9 @@
       "passed": 0,
       "failed": 0
     },
+    "tests": [],
+    "flags": [],
+    "review_required": false,
     "seconds": 0.0
   },
   {
@@ -191,6 +304,9 @@
       "passed": 0,
       "failed": 0
     },
+    "tests": [],
+    "flags": [],
+    "review_required": false,
     "seconds": 0.0
   },
   {
@@ -209,6 +325,9 @@
       "passed": 0,
       "failed": 0
     },
+    "tests": [],
+    "flags": [],
+    "review_required": false,
     "seconds": 0.0
   }
 ]
