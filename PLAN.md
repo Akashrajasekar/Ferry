@@ -12,7 +12,7 @@
 ## 0. Status tracker (Bob: tick the box at the end of each task)
 
 - [x] T01 Bob foundation (AGENTS.md, custom mode, skill, rules)
-- [ ] T02 Scenario generator + policy documents
+- [x] T02 Scenario generator + policy documents
 - [ ] T03 CLI part 1: `audit`, `try`
 - [ ] T04 CLI part 2: `verify`, `report`
 - [ ] T05 Scope fixes from documents (Plan mode)
