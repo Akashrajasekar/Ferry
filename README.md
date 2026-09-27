@@ -29,10 +29,10 @@ audit  ->  scope  ->  try  ->  adapt  ->  verify  ->  report
 
 ### Review flags
 
-Ferry doesn't blindly trust AI output. It flags:
+Ferry routes judgment calls to a human reviewer. It flags:
 
-- **`existing_test_modified`**: the port changed a pre-existing test, meaning the fix changes tested behaviour on that branch. A release manager should approve it.
-- **`test_passes_without_fix`**: a test expects an error that already happens without the fix, so it proves nothing.
+- **`existing_test_modified`**: the fix changes tested behaviour on that branch, so a pre-existing test was updated. Routed to a release manager for sign-off.
+- **`test_passes_without_fix`**: precision check. A test already passes without the fix, so the port's proof comes from its other tests; highlighted for a quick review.
 
 ## Results (demo project)
 
