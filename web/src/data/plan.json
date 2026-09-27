@@ -1,0 +1,104 @@
+{
+  "fixes": [
+    {
+      "sha": "70183af0331556ac6263e4920697121416beefde",
+      "subject": "fix(security): prevent path traversal in invoice export (FSA-2026-001)",
+      "category": "security",
+      "targets": [
+        {
+          "branch": "release/0.9",
+          "decision": "skip",
+          "reason": "Branch is End-of-life since 2026-03-31. No fixes of any kind are backported. Advisory lists 0.9 as affected but policy wins; 0.9 will not receive a patch.",
+          "citation": { "doc": "SUPPORT_POLICY.pdf §1; SECURITY_ADVISORY.docx §3" }
+        },
+        {
+          "branch": "release/1.x",
+          "decision": "port",
+          "reason": "export_invoice exists in ledger/export.py on this branch (confirmed via git grep). Branch is Security-only within support window (until 2026-12-31); security fixes are required.",
+          "citation": { "doc": "SUPPORT_POLICY.pdf §1, §2" }
+        },
+        {
+          "branch": "release/2.x",
+          "decision": "port",
+          "reason": "export_invoice exists in ledger/export.py on this branch with diverged signature (invoice, filename, out_dir) (confirmed via git grep). Branch is Maintenance within support window (until 2027-06-30); security fixes are required.",
+          "citation": { "doc": "SUPPORT_POLICY.pdf §1, §2" }
+        }
+      ]
+    },
+    {
+      "sha": "3aeb93fca9ad3e836cd132d399d24e447b55b44c",
+      "subject": "fix: use banker's rounding for currency",
+      "category": "bugfix",
+      "targets": [
+        {
+          "branch": "release/0.9",
+          "decision": "skip",
+          "reason": "Branch is End-of-life since 2026-03-31. No fixes of any kind are backported.",
+          "citation": { "doc": "SUPPORT_POLICY.pdf §1" }
+        },
+        {
+          "branch": "release/1.x",
+          "decision": "skip",
+          "reason": "round_money exists in ledger/money.py on this branch (confirmed via git grep). Branch is Security-only; regular bug fixes are explicitly not backported to this branch.",
+          "citation": { "doc": "SUPPORT_POLICY.pdf §1, §2" }
+        },
+        {
+          "branch": "release/2.x",
+          "decision": "port",
+          "reason": "round_amount exists in ledger/money.py on this branch (renamed from round_money in v2, confirmed via git grep). Branch is Maintenance within support window (until 2027-06-30); bug fixes are backported.",
+          "citation": { "doc": "SUPPORT_POLICY.pdf §1" }
+        }
+      ]
+    },
+    {
+      "sha": "208089284e3a64b739fd8513d77c13577ca8fda7",
+      "subject": "fix: correct typo in invoice header",
+      "category": "bugfix",
+      "targets": [
+        {
+          "branch": "release/0.9",
+          "decision": "skip",
+          "reason": "Branch is End-of-life since 2026-03-31. No fixes of any kind are backported.",
+          "citation": { "doc": "SUPPORT_POLICY.pdf §1" }
+        },
+        {
+          "branch": "release/1.x",
+          "decision": "skip",
+          "reason": "ledger/templates.py exists on this branch (confirmed via git ls-tree). Branch is Security-only; regular bug fixes are not backported.",
+          "citation": { "doc": "SUPPORT_POLICY.pdf §1" }
+        },
+        {
+          "branch": "release/2.x",
+          "decision": "port",
+          "reason": "ledger/templates.py exists on this branch (confirmed via git ls-tree). Branch is Maintenance within support window (until 2027-06-30); bug fixes are backported.",
+          "citation": { "doc": "SUPPORT_POLICY.pdf §1" }
+        }
+      ]
+    },
+    {
+      "sha": "bccd2c23fbd004db896cf9541307ea047ee6f39d",
+      "subject": "fix: cap discounts at 100%",
+      "category": "feature-fix",
+      "targets": [
+        {
+          "branch": "release/0.9",
+          "decision": "not_applicable",
+          "reason": "ledger/discounts.py does not exist on this branch. The discounts module was introduced only in v3.0 (main). Confirmed by git ls-tree -r --name-only release/0.9 (9 files; no discounts file present).",
+          "citation": { "doc": "git ls-tree -r --name-only release/0.9" }
+        },
+        {
+          "branch": "release/1.x",
+          "decision": "not_applicable",
+          "reason": "ledger/discounts.py does not exist on this branch. The discounts module was introduced only in v3.0 (main). Confirmed by git ls-tree -r --name-only release/1.x (9 files; no discounts file present).",
+          "citation": { "doc": "git ls-tree -r --name-only release/1.x" }
+        },
+        {
+          "branch": "release/2.x",
+          "decision": "not_applicable",
+          "reason": "ledger/discounts.py does not exist on this branch. The discounts module was introduced only in v3.0 (main). Confirmed by git ls-tree -r --name-only release/2.x (10 files; no discounts file present).",
+          "citation": { "doc": "git ls-tree -r --name-only release/2.x" }
+        }
+      ]
+    }
+  ]
+}

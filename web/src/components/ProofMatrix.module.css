@@ -1,0 +1,210 @@
+.section {
+  padding-block: clamp(56px, 8vw, 96px);
+}
+
+.header {
+  max-width: 680px;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: var(--bob-light);
+}
+
+.heading {
+  margin-top: 10px;
+  font-size: clamp(26px, 3.4vw, 36px);
+  line-height: 1.15;
+}
+
+.matrixScroll {
+  margin-top: 32px;
+  overflow-x: auto;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+}
+
+.matrixGrid {
+  display: grid;
+}
+
+.gridRow {
+  display: contents;
+}
+
+.cell {
+  min-height: 64px;
+  padding: 10px 12px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+}
+
+.matrixGrid > .gridRow:last-child .cell {
+  border-bottom: none;
+}
+
+.cornerCell,
+.branchHeaderCell {
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  color: var(--text-2);
+  font-weight: 600;
+  background: var(--surface);
+}
+
+.fixCell {
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 4px;
+  background: var(--surface);
+}
+
+.rowTop {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.rowLetter {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 14px;
+  color: var(--text);
+}
+
+.rowSha {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.kindChip {
+  font-size: 10.5px;
+  font-weight: 600;
+  padding: 3px 8px;
+  border-radius: 999px;
+  border: 1px solid var(--border-strong);
+  color: var(--text-2);
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.kindChip.security {
+  color: var(--review-text);
+  border-color: var(--review-border);
+  background: var(--review-surface);
+}
+
+.rowSubject {
+  margin: 0;
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.4;
+}
+
+.tileCell {
+  padding: 6px;
+}
+
+.tile {
+  position: relative;
+  width: 100%;
+  min-height: 52px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--border-strong);
+  background: var(--bg);
+  color: var(--text-2);
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  padding: 8px 10px;
+  text-align: left;
+}
+
+.tile:hover {
+  border-color: var(--bob-border);
+}
+
+.tile.selected {
+  box-shadow: 0 0 0 2px var(--bob-light);
+  border-color: var(--bob-border);
+}
+
+.tile.adapted_proven,
+.tile.clean_proven {
+  color: var(--proven);
+  background: var(--proven-surface);
+  border-color: var(--proven-border);
+}
+
+.tile.escalated {
+  color: var(--review-text);
+  background: var(--review-surface);
+  border-color: var(--review-border);
+}
+
+.tile.pending {
+  color: var(--bob-light);
+  background: var(--bob-surface);
+  border-color: var(--bob-border);
+}
+
+.tile.skip,
+.tile.na {
+  color: var(--skip);
+  background: var(--skip-surface);
+  border-color: var(--na-border);
+}
+
+.reviewDot {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--review);
+}
+
+.legend {
+  margin-top: 16px;
+  display: flex;
+  gap: 18px;
+  flex-wrap: wrap;
+  font-size: 12.5px;
+  color: var(--text-2);
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.legendSwatch {
+  width: 12px;
+  height: 12px;
+  border-radius: 4px;
+  border: 1px solid var(--border-strong);
+}
+
+.detailWrap {
+  margin-top: 24px;
+}
+
+@media (max-width: 767px) {
+  .cornerCell,
+  .fixCell {
+    position: sticky;
+    left: 0;
+    z-index: 2;
+  }
+}

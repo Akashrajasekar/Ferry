@@ -1,0 +1,14 @@
+{
+  "sha": "70183af0331556ac6263e4920697121416beefde",
+  "branch": "release/1.x",
+  "status": "ported",
+  "attempts": 1,
+  "adaptations": [
+    "File moved: ledger/exporters/pdf.py (main) → ledger/export.py (release/1.x)",
+    "Function signature changed: export_invoice(invoice, filename, out_dir) → export_invoice(invoice, path); guards applied to the single 'path' parameter instead of 'filename'",
+    "Test import changed: from ledger.exporters.pdf import export_invoice → from ledger.export import export_invoice",
+    "test_normal_export_still_works: removed 'out_dir' argument (no such parameter on release/1.x API); test passes full output path directly",
+    "test_normal_export_still_works: 'qty' key removed from item dict (not required by v1 API; kept 'name' and 'amount' which are sufficient)"
+  ],
+  "blocker": null
+}

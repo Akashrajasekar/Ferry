@@ -3,3 +3,6 @@ workspace/
 __pycache__/
 .venv/
 *.pyc
+web/node_modules
+web/dist
+web/design-reference

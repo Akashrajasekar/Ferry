@@ -1,0 +1,98 @@
+.wrap {
+  width: 100%;
+}
+
+.svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.laneLabel {
+  font-family: var(--font-sans);
+  font-size: 15px;
+  fill: var(--text-2);
+  font-weight: 600;
+}
+
+.laneStatus {
+  font-family: var(--font-sans);
+  font-size: 12px;
+  fill: var(--muted);
+}
+
+.dotLetter {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  fill: #061019;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.badgeText {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 600;
+  text-anchor: middle;
+  dominant-baseline: central;
+}
+
+.naNote {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  fill: var(--muted);
+  text-anchor: middle;
+}
+
+.routeAdapted {
+  stroke: var(--proven);
+  stroke-width: 2;
+  fill: none;
+  stroke-dasharray: 5 5;
+  animation: dash 1.6s linear infinite;
+}
+
+.routeClean {
+  stroke: var(--bob-light);
+  stroke-width: 2;
+  fill: none;
+  stroke-dasharray: 5 5;
+  animation: dash 1.6s linear infinite;
+}
+
+@keyframes dash {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .routeAdapted,
+  .routeClean {
+    animation: none;
+  }
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--text-2);
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  white-space: nowrap;
+}
+
+.legendSwatch {
+  width: 11px;
+  height: 3px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}

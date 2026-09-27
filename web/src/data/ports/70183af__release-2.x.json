@@ -1,0 +1,12 @@
+{
+  "sha": "70183af0331556ac6263e4920697121416beefde",
+  "branch": "release/2.x",
+  "status": "ported",
+  "attempts": 1,
+  "adaptations": [
+    "File moved: fix was in ledger/exporters/pdf.py on main; applied to ledger/export.py on release/2.x (file was deleted/never existed on this branch)",
+    "Import changed: test imports from ledger.export instead of ledger.exporters.pdf",
+    "No test cases removed: signature (invoice, filename, out_dir) is identical on both branches, no parameter adaptation needed"
+  ],
+  "blocker": null
+}

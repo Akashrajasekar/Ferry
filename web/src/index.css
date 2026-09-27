@@ -1,0 +1,174 @@
+:root {
+  --bg: #0b0f14;
+  --surface: #0f141b;
+  --border: #1c2530;
+  --border-strong: #243041;
+  --text: #e6edf3;
+  --text-2: #c1ccd7;
+  --muted: #9aa7b4;
+
+  --bob: #4589ff;
+  --bob-light: #78a9ff;
+  --bob-pale: #a6c8ff;
+  --bob-surface: #0e1d3a;
+  --bob-border: #2f5fb3;
+
+  --proven: #6fdc8c;
+  --proven-surface: #0f2a1a;
+  --proven-border: #2e7d4f;
+
+  --review: #ff832b;
+  --review-text: #ff9a4d;
+  --review-pale: #ffd2b3;
+  --review-surface: #1f140c;
+  --review-border: #8a4b1a;
+
+  --skip: #a3afbb;
+  --skip-surface: #151b23;
+  --skip-border: #334050;
+  --na-border: #4a5666;
+
+  --diff-add-bg: #0f2a1a;
+  --diff-add: #9ef0b5;
+  --diff-del-bg: #2a1215;
+  --diff-del: #ffb3b8;
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+
+  --font-sans: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-heading: 'IBM Plex Sans Condensed', 'IBM Plex Sans', -apple-system, sans-serif;
+  --font-mono: 'IBM Plex Mono', 'SFMono-Regular', Consolas, monospace;
+
+  --page-pad: clamp(20px, 5vw, 80px);
+  --content-max: 1280px;
+
+  color-scheme: dark;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-sans);
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  margin: 0;
+  color: var(--text);
+}
+
+p {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+button {
+  font-family: inherit;
+  color: inherit;
+}
+
+img,
+svg {
+  max-width: 100%;
+  display: block;
+}
+
+section {
+  scroll-margin-top: 88px;
+}
+
+.container {
+  max-width: var(--content-max);
+  margin: 0 inline-start;
+  margin-inline: auto;
+  padding-inline: var(--page-pad);
+}
+
+.mono {
+  font-family: var(--font-mono);
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 1000;
+  background: var(--bob);
+  color: #061019;
+  padding: 10px 16px;
+  border-radius: var(--radius-sm);
+  font-weight: 600;
+}
+
+.skip-link:focus {
+  left: 12px;
+  top: 12px;
+}
+
+:focus-visible {
+  outline: 2px solid var(--bob-light);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.reveal.revealed {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  * {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+  }
+}
+
+::selection {
+  background: var(--bob-border);
+  color: var(--text);
+}
